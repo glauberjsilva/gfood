@@ -15,6 +15,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
+import com.glauber.gfood.api.exceptionhandler.ProblemType;
 import com.glauber.gfood.domain.model.Cidade;
 import com.glauber.gfood.domain.model.Cozinha;
 import com.glauber.gfood.domain.model.Endereco;
@@ -65,6 +66,8 @@ public class CadastroRestauranteApiIT {
 	private String jsonRestauranteSemFrete;
 	private String jsonRestauranteSemCozinha;
 	private String jsonRestauranteComCozinhaInexistente;
+	private String jsonRestauranteTaxaFreteIncorreta;
+	
 	private Restaurante restauranteCozinhaMineira;
 	
 	/**
@@ -78,10 +81,11 @@ public class CadastroRestauranteApiIT {
 		RestAssured.basePath = "/restaurantes";
 		
 		jsonRestauranteCorreto = ResourceUtils.getContentFromResource("/json/correto/restaurante-new-york-barbecue.json");
-		jsonRestauranteSemFrete = ResourceUtils.getContentFromResource("/json/correto/restaurante-new-york-barbecue-sem-frete.json");
-		jsonRestauranteSemCozinha = ResourceUtils.getContentFromResource("/json/correto/restaurante-new-york-barbecue-sem-cozinha.json");
-		jsonRestauranteComCozinhaInexistente = ResourceUtils.getContentFromResource("/json/correto/restaurante-new-york-barbecue-com-cozinha-inexistente.json");
-
+		jsonRestauranteSemFrete = ResourceUtils.getContentFromResource("/json/incorreto/restaurante-new-york-barbecue-sem-frete.json");
+		jsonRestauranteSemCozinha = ResourceUtils.getContentFromResource("/json/incorreto/restaurante-new-york-barbecue-sem-cozinha.json");
+		jsonRestauranteComCozinhaInexistente = ResourceUtils.getContentFromResource("/json/incorreto/restaurante-new-york-barbecue-com-cozinha-inexistente.json");
+		jsonRestauranteTaxaFreteIncorreta = ResourceUtils.getContentFromResource("json/incorreto/restaurante-taxa-frete-negativo.json");
+		
 		this.databaseCleaner.clearTables();
 		this.prepararDados();
 	}
@@ -93,7 +97,8 @@ public class CadastroRestauranteApiIT {
 		.when()
 			.get()
 		.then()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK.value())
+		.log().all();
 	}
 	
 	@Test
@@ -103,7 +108,8 @@ public class CadastroRestauranteApiIT {
 		.when()
 			.get()
 		.then()
-			.body("", Matchers.hasSize(qtdeRestauranteCadastrado));
+			.body("", Matchers.hasSize(qtdeRestauranteCadastrado))
+		.log().all();
 	}
 	 
 	@Test
@@ -115,7 +121,8 @@ public class CadastroRestauranteApiIT {
 		.when()
 			.post()
 		.then()
-			.statusCode(HttpStatus.CREATED.value());
+			.statusCode(HttpStatus.CREATED.value())
+		.log().all();;
 	}
 	
 	@Test
@@ -129,6 +136,23 @@ public class CadastroRestauranteApiIT {
 		.then()
 			.statusCode(HttpStatus.BAD_REQUEST.value())
 			.body("title", equalTo(DADOS_INVALIDOS_PROBLEM_TITLE));
+	}
+	
+	@Test
+	public void deveRetornarStatus400_QuandoCadastrarRestauranteComTaxaFreteInvalida() {
+
+		given()
+			.body(jsonRestauranteTaxaFreteIncorreta)
+			.contentType(ContentType.JSON)
+			.accept(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.BAD_REQUEST.value())
+			.body("title", equalTo(ProblemType.DADOS_INVALIDOS.getTitle()))
+			.body("objects[0].name",equalTo("taxaFrete") )
+			.body("objects[0].userMessag", equalTo("Taxa frete inválida."))
+			.log().all();
 	}
 	
 	@Test

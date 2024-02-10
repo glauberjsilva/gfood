@@ -45,6 +45,7 @@ public class CadastroCozinhaIT {
 		// Validação
 		assertThat(novaCozinha).isNotNull();
 		assertThat(novaCozinha.getId()).isNotNull();
+
 	}
 
 	@Test()
@@ -81,6 +82,8 @@ public class CadastroCozinhaIT {
 		restaurante.setNome("Restaurante coreano");
 		restaurante.setTaxaFrete(BigDecimal.TEN);
 		restaurante.setCozinha(cozinha);
+		restaurante.setEndereco(null);
+		
 		restaurante = cadastroRestauranteService.salvar(restaurante);
 		
 		Long cozinhaEmUsoId = cozinha.getId();

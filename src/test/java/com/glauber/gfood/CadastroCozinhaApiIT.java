@@ -74,7 +74,8 @@ public class CadastroCozinhaApiIT {
 		.when()
 			.get()
 		.then()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.OK.value())
+		.log().all();;
 	}
 	
 	@Test
@@ -99,7 +100,8 @@ public class CadastroCozinhaApiIT {
 		.when()
 			.post()
 		.then()
-			.statusCode(HttpStatus.CREATED.value());
+			.statusCode(HttpStatus.CREATED.value())
+		.log().all();;
 	}
 	
 	@Test
@@ -111,7 +113,8 @@ public class CadastroCozinhaApiIT {
 			.get("/{cozinhaId}")
 		.then()
 			.statusCode(HttpStatus.OK.value())
-			.body("nome", equalTo(cozinhaAmericana.getNome()));
+			.body("nome", equalTo(cozinhaAmericana.getNome()))
+		.log().all();;
 	}
 	
 	@Test
@@ -122,7 +125,8 @@ public class CadastroCozinhaApiIT {
 		.when()
 			.get("/{cozinhaId}")
 		.then()
-			.statusCode(HttpStatus.NOT_FOUND.value());
+			.statusCode(HttpStatus.NOT_FOUND.value())
+		.log().all();;
 	}
 	
 	private void prepararDados() {
