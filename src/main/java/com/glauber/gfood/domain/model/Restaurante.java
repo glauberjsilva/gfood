@@ -1,7 +1,7 @@
 package com.glauber.gfood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,38 +49,32 @@ public class Restaurante {
 	@Column(nullable = false)
 	private String nome;
 
-	//@DecimalMin("0")
-	
 	@NotNull
 	//@PositiveOrZero(message = "{TaxaFrete.invalida}")
 	//@TaxaFrete
+	//@DecimalMin("0")
 	@Multiplo(numero = 5)
 	@PositiveOrZero
 	@Column(name = "taxa_frete", nullable = false)
 	private BigDecimal taxaFrete;
 
-	//@JsonIgnore
-	//@JsonIgnoreProperties({"hibernateLazyInitializer"})
-	
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
 	@NotNull
 	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
-
+	
 	@Embedded
 	private Endereco endereco;
 
-	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
 
-	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	@UpdateTimestamp()
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime dataAtualizacao;
+	private OffsetDateTime dataAtualizacao;
 
 	@ManyToMany()
 	@JoinTable(name = "restaurante_forma_pagamento", 

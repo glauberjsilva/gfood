@@ -1,7 +1,7 @@
 package com.glauber.gfood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,16 +43,16 @@ public class Pedido {
 
 	@CreationTimestamp
 	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataCriacao;
+	private OffsetDateTime dataCriacao;
 
 	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataConfirmacao;
+	private OffsetDateTime dataConfirmacao;
 
 	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataConcelamento;
+	private OffsetDateTime dataConcelamento;
 
 	@Column(columnDefinition = "datetime")
-	private LocalDateTime dataEntrega;
+	private OffsetDateTime dataEntrega;
 
 	@ManyToOne
 	@JoinColumn(name = "forma_pagmaento_id")

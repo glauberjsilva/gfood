@@ -12,15 +12,11 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.glauber.gfood.core.validation.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@JsonRootName("cozinha") //usado para xml
 @Data
 @Entity(name = "cozinha")
 public class Cozinha {
@@ -31,12 +27,10 @@ public class Cozinha {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	//@JsonProperty("titulo") //para dar nome a uma propriedade json ou xml
 	@NotBlank
 	@Column(length = 30, nullable = false)
 	private String nome;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<>();
 

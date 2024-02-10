@@ -1,7 +1,6 @@
 package com.glauber.gfood.api.model.mixin;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,23 +10,30 @@ import com.glauber.gfood.domain.model.Endereco;
 import com.glauber.gfood.domain.model.FormaPagamento;
 import com.glauber.gfood.domain.model.Produto;
 
-public class RestauranteMixin {
+public abstract class RestauranteMixin {
 
-	@JsonIgnoreProperties(value = "nome", allowGetters = true) //ao serializar um restaurante a propriedade nome da cozinha é ignorada
+	//ao serializar um restaurante a propriedade nome da cozinha é ignorada
+	@JsonIgnoreProperties(value = "nome", allowGetters = true) 
 	private Cozinha cozinha;
 
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	//@JsonIgnoreProperties({"hibernateLazyInitializer"})
 	@JsonIgnore
 	private Endereco endereco;
 
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
 	@JsonIgnore
-	private LocalDateTime dataCadastro;
+	private OffsetDateTime dataCadastro;
+
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	//@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+	@JsonIgnore
+	private OffsetDateTime dataAtualizacao;
 
 	@JsonIgnore
-	private LocalDateTime dataAtualizacao;
+	private List<FormaPagamento> formasPagamento;
 
 	@JsonIgnore
-	private List<FormaPagamento> formasPagamento = new ArrayList<>();
-
-	@JsonIgnore
-	private List<Produto> produtos = new ArrayList<>();
+	private List<Produto> produtos;
 }
