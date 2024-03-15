@@ -8,7 +8,7 @@
 - Spring Security
 - Lombok
 - Flyway
-- Jacson
+- Jackson
 - ModelMapper
 
 ### Teste
