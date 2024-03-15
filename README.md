@@ -12,9 +12,10 @@
 - ModelMapper
 
 ### Teste
-- JUnit 5.8.12
-- Rest Assured 4.5.1
-
+- JUnit 5
+- Rest Assured
+- Mockito
+  
 ### Banco de Dados
 - MySQL 8
 
