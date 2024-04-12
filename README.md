@@ -1,4 +1,4 @@
-# Projeto de Teste e Estudos de APIs Rest
+# APIs Rest - Projeto de Teste  
 
 ### Tecnologias: 
 - Java 17 
